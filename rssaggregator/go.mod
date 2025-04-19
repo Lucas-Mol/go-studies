@@ -1,4 +1,4 @@
-module github.com/Lucas-Mol/go-studies/rssagregator
+module github.com/Lucas-Mol/go-studies/rssaggregator
 
 go 1.24
 
