@@ -2,32 +2,27 @@ package main
 
 import (
 	"fmt"
-	"github.com/go-chi/chi"
-	"github.com/go-chi/cors"
+	"github.com/Lucas-Mol/go-studies/rssaggregator/config"
+	"github.com/Lucas-Mol/go-studies/rssaggregator/handlers"
+	"github.com/Lucas-Mol/go-studies/rssaggregator/internal/database"
 	"log"
 	"net/http"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
-	loadingFromEnvFile()
-	port := getPort()
+	config.LoadingFromEnvFile()
 
-	router := chi.NewRouter()
+	dbURL := config.GetEnvVar("DB_URL")
+	conn := config.InitializeDBConn(dbURL)
 
-	router.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"*"},
-		ExposedHeaders:   []string{"Link"},
-		AllowCredentials: false,
-		MaxAge:           300,
-	}))
+	apiCfg := handlers.ApiConfig{
+		DB: database.New(conn),
+	}
 
-	v1Router := chi.NewRouter()
-	v1Router.Get("/healthz", handlerReadiness)
-	v1Router.Get("/err", handlerErr)
-
-	router.Mount("/v1", v1Router)
+	port := config.GetEnvVar("PORT")
+	router := config.InitializeRouter(apiCfg)
 
 	server := &http.Server{
 		Handler: router,
