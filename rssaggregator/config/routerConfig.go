@@ -32,6 +32,8 @@ func InitializeRouter(apiCfg handlers.ApiConfig) *chi.Mux {
 	v1Router.Get("/feed_follows", apiCfg.MiddlewareAuth(apiCfg.HandlerGetAllFeedFollowsByUser))
 	v1Router.Delete("/feed_follows/{feedFollowID}", apiCfg.MiddlewareAuth(apiCfg.HandlerDeleteFeedFollows))
 
+	v1Router.Get("/posts", apiCfg.MiddlewareAuth(apiCfg.HandlerGetPostsByUserFeedFollows))
+
 	router.Mount("/v1", v1Router)
 	return router
 }
