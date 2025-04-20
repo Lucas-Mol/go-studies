@@ -22,7 +22,10 @@ func InitializeRouter(apiCfg handlers.ApiConfig) *chi.Mux {
 	v1Router.Get("/healthz", handlers.HandlerReadiness)
 	v1Router.Get("/err", handlers.HandlerErr)
 	v1Router.Post("/users", apiCfg.HandlerCreateUser)
-	v1Router.Get("/users", apiCfg.HandlerGetUser)
+	v1Router.Get("/users", apiCfg.MiddlewareAuth(apiCfg.HandlerGetUser))
+
+	v1Router.Post("/feeds", apiCfg.MiddlewareAuth(apiCfg.HandlerCreateFeed))
+	v1Router.Get("/feeds", apiCfg.HandlerGetAllFeeds)
 
 	router.Mount("/v1", v1Router)
 	return router

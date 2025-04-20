@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Lucas-Mol/go-studies/rssaggregator/auth"
 	"github.com/Lucas-Mol/go-studies/rssaggregator/internal/database"
 	"github.com/Lucas-Mol/go-studies/rssaggregator/models"
 	"github.com/google/uuid"
@@ -11,7 +10,7 @@ import (
 	"time"
 )
 
-func (apiCfg ApiConfig) HandlerCreateUser(w http.ResponseWriter, r *http.Request) {
+func (cfg ApiConfig) HandlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Name string `json:"name"`
 	}
@@ -24,7 +23,7 @@ func (apiCfg ApiConfig) HandlerCreateUser(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	newUser, err := apiCfg.DB.CreateUser(r.Context(), database.CreateUserParams{
+	newUser, err := cfg.DB.CreateUser(r.Context(), database.CreateUserParams{
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
@@ -37,18 +36,6 @@ func (apiCfg ApiConfig) HandlerCreateUser(w http.ResponseWriter, r *http.Request
 	respondWithJSON(w, http.StatusCreated, models.DatabaseUserToUser(newUser))
 }
 
-func (apiCfg ApiConfig) HandlerGetUser(w http.ResponseWriter, r *http.Request) {
-	apiKey, err := auth.GetAPIKey(r.Header)
-	if err != nil {
-		respondWithError(w, http.StatusForbidden, err.Error())
-		return
-	}
-
-	user, err := apiCfg.DB.GetUserByAPIKey(r.Context(), apiKey)
-	if err != nil {
-		respondWithError(w, http.StatusForbidden, fmt.Sprintf("Couldn't get user: %v", err.Error()))
-		return
-	}
-
+func (cfg ApiConfig) HandlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
 	respondWithJSON(w, http.StatusOK, models.DatabaseUserToUser(user))
 }
