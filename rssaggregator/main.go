@@ -7,6 +7,7 @@ import (
 	"github.com/Lucas-Mol/go-studies/rssaggregator/internal/database"
 	"log"
 	"net/http"
+	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -17,13 +18,15 @@ func main() {
 	dbURL := config.GetEnvVar("DB_URL")
 	conn := config.InitializeDBConn(dbURL)
 
+	db := database.New(conn)
 	apiCfg := handlers.ApiConfig{
-		DB: database.New(conn),
+		DB: db,
 	}
-
-	port := config.GetEnvVar("PORT")
 	router := config.InitializeRouter(apiCfg)
 
+	go startScraping(db, 10, time.Minute)
+
+	port := config.GetEnvVar("PORT")
 	server := &http.Server{
 		Handler: router,
 		Addr:    fmt.Sprintf(":%v", port),

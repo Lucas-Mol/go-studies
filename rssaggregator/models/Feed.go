@@ -27,7 +27,7 @@ func DatabaseFeedToFeed(dbFeed database.Feed) Feed {
 }
 
 func DatabaseFeedsToFeeds(dbFeeds []database.Feed) []Feed {
-	var feeds []Feed
+	feeds := []Feed{}
 
 	for _, dbFeed := range dbFeeds {
 		feeds = append(feeds, DatabaseFeedToFeed(dbFeed))

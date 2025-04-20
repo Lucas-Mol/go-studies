@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func (cfg ApiConfig) HandlerCreateUser(w http.ResponseWriter, r *http.Request) {
+func (cfg *ApiConfig) HandlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
 		Name string `json:"name"`
 	}
@@ -36,6 +36,6 @@ func (cfg ApiConfig) HandlerCreateUser(w http.ResponseWriter, r *http.Request) {
 	respondWithJSON(w, http.StatusCreated, models.DatabaseUserToUser(newUser))
 }
 
-func (cfg ApiConfig) HandlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
+func (cfg *ApiConfig) HandlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
 	respondWithJSON(w, http.StatusOK, models.DatabaseUserToUser(user))
 }

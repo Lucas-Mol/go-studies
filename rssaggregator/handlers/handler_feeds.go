@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func (cfg ApiConfig) HandlerCreateFeed(w http.ResponseWriter, r *http.Request, user database.User) {
+func (cfg *ApiConfig) HandlerCreateFeed(w http.ResponseWriter, r *http.Request, user database.User) {
 	type parameters struct {
 		Name string `json:"name"`
 		URL  string `json:"url"`
@@ -39,7 +39,7 @@ func (cfg ApiConfig) HandlerCreateFeed(w http.ResponseWriter, r *http.Request, u
 	respondWithJSON(w, http.StatusCreated, models.DatabaseFeedToFeed(feed))
 }
 
-func (cfg ApiConfig) HandlerGetAllFeeds(w http.ResponseWriter, r *http.Request) {
+func (cfg *ApiConfig) HandlerGetAllFeedsByUser(w http.ResponseWriter, r *http.Request) {
 	feeds, err := cfg.DB.GetAllFeeds(r.Context())
 	if err != nil {
 		respondWithJSON(w, http.StatusInternalServerError, fmt.Sprintf("Failed to get all feeds: %v", err))
