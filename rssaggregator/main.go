@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"github.com/Lucas-Mol/go-studies/rssaggregator/config"
 	"github.com/Lucas-Mol/go-studies/rssaggregator/handlers"
@@ -24,7 +25,9 @@ func main() {
 	}
 	router := config.InitializeRouter(apiCfg)
 
-	go startScraping(db, 10, time.Minute)
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	go startScraping(ctx, db, 10, time.Minute)
 
 	port := config.GetEnvVar("PORT")
 	server := &http.Server{

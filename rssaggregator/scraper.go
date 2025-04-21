@@ -12,30 +12,40 @@ import (
 )
 
 func startScraping(
+	ctx context.Context,
 	db *database.Queries,
 	concurrency int,
 	timeBetweenRequest time.Duration,
 ) {
-	log.Printf("Scraping on %v goroutines every %s duration", concurrency, timeBetweenRequest)
 	ticker := time.NewTicker(timeBetweenRequest)
+	defer ticker.Stop()
 
-	for ; ; <-ticker.C {
-		feeds, err := db.GetNextFeedsToFetch(
-			context.Background(),
-			int32(concurrency),
-		)
-		if err != nil {
-			log.Println("erro fetching feeds: ", err.Error())
-			continue
+	for {
+		select {
+		case <-ctx.Done():
+			log.Println("Scraping stopped")
+			return
+		case <-ticker.C:
+			log.Println("Scraping started")
+			log.Printf("Scraping on %v goroutines every %s duration", concurrency, timeBetweenRequest)
+
+			feeds, err := db.GetNextFeedsToFetch(
+				context.Background(),
+				int32(concurrency),
+			)
+			if err != nil {
+				log.Println("erro fetching feeds: ", err.Error())
+				continue
+			}
+
+			wg := &sync.WaitGroup{}
+			for _, feed := range feeds {
+				wg.Add(1)
+
+				go scraperFeed(db, wg, feed)
+			}
+			wg.Wait()
 		}
-
-		wg := &sync.WaitGroup{}
-		for _, feed := range feeds {
-			wg.Add(1)
-
-			go scraperFeed(db, wg, feed)
-		}
-		wg.Wait()
 	}
 }
 
