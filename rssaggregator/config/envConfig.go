@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func LoadingFromEnvFile() {
+func LoadingEnvFile() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")

@@ -13,7 +13,7 @@ import (
 )
 
 func main() {
-	config.LoadingFromEnvFile()
+	config.LoadingEnvFile()
 
 	dbURL := config.GetEnvVar("DB_URL")
 	conn := config.InitializeDBConn(dbURL)
