@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/Lucas-Mol/go-studies/rssaggregator/config"
-	"github.com/Lucas-Mol/go-studies/rssaggregator/handlers"
+	"github.com/Lucas-Mol/go-studies/rssaggregator/internal/config"
 	"github.com/Lucas-Mol/go-studies/rssaggregator/internal/database"
+	"github.com/Lucas-Mol/go-studies/rssaggregator/internal/handlers"
 	"log"
 	"net/http"
 	"time"

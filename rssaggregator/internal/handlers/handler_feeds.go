@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/Lucas-Mol/go-studies/rssaggregator/internal/database"
-	"github.com/Lucas-Mol/go-studies/rssaggregator/models"
+	"github.com/Lucas-Mol/go-studies/rssaggregator/internal/models"
 	"github.com/google/uuid"
 	"net/http"
 	"time"

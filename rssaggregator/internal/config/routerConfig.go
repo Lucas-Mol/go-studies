@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/Lucas-Mol/go-studies/rssaggregator/handlers"
+	"github.com/Lucas-Mol/go-studies/rssaggregator/internal/handlers"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/cors"
 )

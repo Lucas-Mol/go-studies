@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/Lucas-Mol/go-studies/rssaggregator/auth"
+	"github.com/Lucas-Mol/go-studies/rssaggregator/internal/auth"
 	"github.com/Lucas-Mol/go-studies/rssaggregator/internal/database"
 	"net/http"
 )
