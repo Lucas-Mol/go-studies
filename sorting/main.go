@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sort"
 )
 
 // type ByAge []Person
@@ -19,6 +20,7 @@ import (
 // }
 
 func main() {
+	// ==== Ints and Strings
 	// numbers := []int{5, 3, 4, 1, 2}
 	// sort.Ints(numbers)
 	// fmt.Println("Sorted numbers:", numbers)
@@ -27,7 +29,7 @@ func main() {
 	// sort.Strings(stringSlice)
 	// fmt.Println("Sorted strings:", stringSlice)
 
-	// ---
+	// ==== Function and Interface
 
 	// people := []Person{
 	// 	{"Alice", 30},
@@ -39,7 +41,7 @@ func main() {
 	// sort.Sort(ByAge(people))
 	// fmt.Println("Sorted by age:", people)
 
-	// ---
+	// ==== Generic Function and Interface
 
 	people := []Person{
 		{"Alice", 30},
@@ -69,4 +71,12 @@ func main() {
 	By(name).Sort(people)
 
 	fmt.Println("Sorted by name:", people)
+
+	// ==== Slice
+
+	stringSlice := []string{"banana", "apple", "cherry", "grapes", "guava"}
+	sort.Slice(stringSlice, func(i, j int) bool {
+		return stringSlice[i][len(stringSlice[i])-1] < stringSlice[j][len(stringSlice[j])-1]
+	})
+	fmt.Println("Sorted by last character:", stringSlice)
 }
